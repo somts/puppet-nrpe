@@ -6,7 +6,7 @@ foreach my $d (
     "/opt/local/libexec/nagios",
     "/usr/lib64/nagios/plugins",
     "/usr/lib/nagios/plugins",
-    "/usr/local/libexec/nagios"i
+    "/usr/local/libexec/nagios"
 ) { if (-d $d) { use lib $d; } }
 use utils qw(%ERRORS &print_revision &support &usage );
 
