@@ -3,11 +3,10 @@
 use Getopt::Long;
 use vars qw($opt_h $PROGNAME $opt_w $opt_c $opt_t $opt_vi $msg $state);
 foreach my $d (
-    "/opt/local/libexec/nagios",
-    "/usr/lib64/nagios/plugins",
-    "/usr/lib/nagios/plugins",
-    "/usr/local/libexec/nagios"
-) { if (-d $d) { use lib $d; } }
+use lib "/opt/local/libexec/nagios";
+use lib "/usr/lib64/nagios/plugins";
+use lib "/usr/lib/nagios/plugins";
+use lib "/usr/local/libexec/nagios";
 use utils qw(%ERRORS &print_revision &support &usage );
 
 sub print_help ();
