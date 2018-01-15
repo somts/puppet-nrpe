@@ -1,0 +1,16 @@
+{
+  "name": "somts-nrpe",
+  "version": "0.1.0",
+  "author": "somts",
+  "summary": "Puppet module to manage Nagios Remote Plugin Executor (NRPE)",
+  "license": "BSD 2-Clause License",
+  "source": "https://github.com/somts/puppet-nrpe",
+  "project_page": "https://github.com/somts/puppet-nrpe",
+  "issues_url": "https://github.com/somts/puppet-nrpe/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"saz-sudo","version_requirement":">= 4.2.0"}
+  ],
+  "data_provider": null
+}
+

@@ -1,0 +1,87 @@
+#!/usr/bin/perl -w
+
+# check_znapzend_log 
+#
+# Nagios plugin for checking znapzend log files for "ERROR" in the last hour
+#
+# Author(s):
+#   abrust@ucsd.edu
+#
+# Versions: 0.0.1-IGPP
+# Date: 6/23/2017
+# 
+# Usage:  check_znapzend_log (optional)<log path>
+#   <log path> defaults to '/var/log/znapzend/znapzend.log'
+ 
+
+
+use Date::Parse;
+use Time::Local;
+use strict;
+use warnings;
+
+my $znapzend_log = shift || '/var/log/znapzend/znapzend.log';
+my $epoch_now = time();
+my $epoch_last_hour = $epoch_now - 3600;
+my ($day, $month, $year) = ( localtime() )[3 .. 5];
+my $epoch_3am = timelocal(0, 0, 3, $day, $month, $year);
+my $epoch_4am = timelocal(0, 0, 4, $day, $month, $year);
+my $epoch_stamp;
+my $nolog_entry = 1;
+my @time_convert;
+my $time_stamp;
+
+my %ERRORS=('DEPENDENT'=>4,'UNKNOWN'=>3,'OK'=>0,'WARNING'=>1,'CRITICAL'=>2);
+my $state;
+my $msg;
+
+# skip check during 3-4am as logrotate truncates znapzend.log during this time
+if ( $epoch_now >= $epoch_3am && $epoch_now <= $epoch_4am ) {
+  $state = "OK";
+  $msg = "ZnapZend - Skipping check during 3-4am\n";
+  print $state, " ", $msg;
+  exit ($ERRORS{$state});
+}
+
+if ( open my $fh, '<', $znapzend_log) {
+
+  while(<$fh>) {
+
+    # get time stamp from log
+    $time_stamp = (split/\[(.*?)\]/, $_)[1];
+
+    # convert to epoch so we can narrow to last hour
+    $epoch_stamp = str2time($time_stamp);
+
+    # check if time stamp falls within last hour -AND- ignore 3am-4am (logrotate
+    # truncates logfile)
+    if ( $epoch_stamp >= $epoch_last_hour && $epoch_stamp <= $epoch_now ) {
+      $nolog_entry = 0;
+      if ( $_ =~ m/ERROR/ ) {
+        $state = "CRITICAL";
+        $msg = "ZnapZend - $_\n";
+        print $state, " ", $msg;
+        exit ($ERRORS{$state});
+      }
+    }
+  }  
+} else {
+  $state = "CRITICAL";
+  $msg = "ZnapZend - Could no open file '$znapzend_log' $!\n";
+  print $state, " ", $msg;
+  exit ($ERRORS{$state});
+}
+
+# If no log entries are found, return error
+if ( $nolog_entry ) {
+  $state = "CRITICAL";
+  $msg = "ZnapZend - No log entries were found in last hour\n";
+  print $state, " ", $msg;
+  exit ($ERRORS{$state}); 
+} 
+
+# everythings okay
+$state = "OK";
+$msg = "ZnapZend - No errors found\n";
+print $state, " ", $msg;
+exit ($ERRORS{$state});

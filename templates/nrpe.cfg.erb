@@ -1,0 +1,11 @@
+# Managed by Puppet <%= @module_name %>.
+<%-
+@settings.keys.sort.each do |k|
+    case @settings[k].class.to_s
+    when 'TrueClass','FalseClass' then v = @settings[k] ? '1' : '0'
+    when 'Array' then v = @settings[k].join(',')
+    else v = @settings[k]
+    end
+-%>
+<%= k %>=<%= v %>
+<%- end -%>
