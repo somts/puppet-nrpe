@@ -1,6 +1,6 @@
 {
   "name": "somts-nrpe",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "somts",
   "summary": "Puppet module to manage Nagios Remote Plugin Executor (NRPE)",
   "license": "BSD 2-Clause License",

@@ -2,7 +2,12 @@
 
 use Getopt::Long;
 use vars qw($opt_h $PROGNAME $opt_w $opt_c $opt_t $opt_vi $msg $state);
-use lib "/usr/lib64/nagios/plugins";
+foreach my $d (
+    "/opt/local/libexec/nagios",
+    "/usr/lib64/nagios/plugins",
+    "/usr/lib/nagios/plugins",
+    "/usr/local/libexec/nagios"i
+) { if (-d $d) { use lib $d; } }
 use utils qw(%ERRORS &print_revision &support &usage );
 
 sub print_help ();
@@ -15,7 +20,7 @@ if ($status){
 	print "ERROR:  Processing Arguments\n";
 	exit $ERRORS{'WARNING'};
 	}
-	
+
 $SIG{'ALRM'} = sub {
         print ("ERROR: timed out waiting for $PROGNAME \n");
 	        exit $ERRORS{"WARNING"};
@@ -23,7 +28,7 @@ $SIG{'ALRM'} = sub {
 alarm($opt_t);
 
 
-	
+
 $procfile="/proc/sys/fs/file-nr";
 
 open(FILE, $procfile) or die "$procfile not exits!";
@@ -56,7 +61,7 @@ exit $state;
 
 ########## SUBS ##############################################
 sub process_arguments(){
-	GetOptions ( 
+	GetOptions (
 			"w=s" => \$opt_w, "warning=s"  => \$opt_w,   # warning if above this number
 	                "c=s" => \$opt_c, "critical=s" => \$opt_c,       # critical if above this number
 			"t=i" => \$opt_t, "timeout=i"  => \$opt_t,
