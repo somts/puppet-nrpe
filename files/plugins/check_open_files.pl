@@ -2,7 +2,6 @@
 
 use Getopt::Long;
 use vars qw($opt_h $PROGNAME $opt_w $opt_c $opt_t $opt_vi $msg $state);
-foreach my $d (
 use lib "/opt/local/libexec/nagios";
 use lib "/usr/lib64/nagios/plugins";
 use lib "/usr/lib/nagios/plugins";
