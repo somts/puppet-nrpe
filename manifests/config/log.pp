@@ -1,7 +1,12 @@
 # Manage NRPE logging
 class nrpe::config::log {
+  $file_ensure = $nrpe::ensure ? {
+    'present' => 'file',
+    default   => $nrpe::ensure,
+  }
 
   file { $nrpe::log_file :
+    ensure => $file_ensure,
     owner  => $nrpe::nrpe_user,
     group  => $nrpe::nrpe_group,
     notify => Class['nrpe::service'],
