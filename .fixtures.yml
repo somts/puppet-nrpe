@@ -1,6 +1,7 @@
 fixtures:
   forge_modules:
     firewall: 'puppetlabs/firewall'
+    logrotate: 'puppet/logrotate'
     stdlib: 'puppetlabs/stdlib'
     sudo:   'saz/sudo'
     zfs: 'bodgit/zfs'

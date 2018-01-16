@@ -1,7 +1,7 @@
+# Configure NRPE firewall
 class nrpe::config::firewall {
   $nrpe::allowed_hosts.each |String $host| {
-
-    if $host != '127.0.0.1' { # Skip IPv4 localhost
+    unless $host in ['127.0.0.1','::1'] { # Skip localhost
       firewall { "${nrpe::firewall_priority} NRPE ${host}":
         action  => 'accept',
         ctstate => 'NEW',

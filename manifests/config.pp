@@ -12,22 +12,48 @@ class nrpe::config {
     'present' => 'directory',
     default   => $nrpe::ensure,
   }
+  # set log_file to undef if we are not managing it
+  $_log_file = $nrpe::manage_logfile ? {
+    true  => $nrpe::log_file,
+    false => undef,
+  }
+  $_log_facility = $nrpe::manage_logfile ? {
+    true  => undef,
+    false => $nrpe::log_facility,
+  }
 
   $normal_cfg = "${nrpe::normal_etc}/nrpe.cfg"
 
   $settings = delete_undef_values({
-    allowed_hosts      => $nrpe::allowed_hosts,
-    command_timeout    => $nrpe::command_timeout,
-    connection_timeout => $nrpe::connection_timeout,
-    debug              => $nrpe::debug,
-    dont_blame_nrpe    => $nrpe::dont_blame_nrpe,
-    include_dir        => $nrpe::include_dir,
-    log_facility       => $nrpe::log_facility,
-    nrpe_group         => $nrpe::nrpe_group,
-    nrpe_user          => $nrpe::nrpe_user,
-    pid_file           => $nrpe::pid_file,
-    server_port        => $nrpe::server_port,
+    log_facility                    => $_log_facility,
+    log_file                        => $_log_file,
+    debug                           => $nrpe::debug,
+    pid_file                        => $nrpe::pid_file,
+    server_port                     => $nrpe::server_port,
+    server_address                  => $nrpe::server_address,
+    listen_queue_size               => $nrpe::listen_queue_size,
+    nrpe_user                       => $nrpe::nrpe_user,
+    nrpe_group                      => $nrpe::nrpe_group,
+    allowed_hosts                   => $nrpe::allowed_hosts,
+    dont_blame_nrpe                 => $nrpe::dont_blame_nrpe,
+    allow_bash_command_substitution => $nrpe::allow_bash_command_substitution,
+    command_prefix                  => $nrpe::command_prefix,
+    max_commands                    => $nrpe::max_commands,
+    command_timeout                 => $nrpe::command_timeout,
+    connection_timeout              => $nrpe::connection_timeout,
+    allow_weak_random_seed          => $nrpe::allow_weak_random_seed,
+    ssl_version                     => $nrpe::ssl_version,
+    ssl_use_adh                     => $nrpe::ssl_use_adh,
+    ssl_cipher_list                 => $nrpe::ssl_cipher_list,
+    ssl_cacert_file                 => $nrpe::ssl_cacert_file,
+    ssl_cert_file                   => $nrpe::ssl_cert_file,
+    ssl_privatekey_file             => $nrpe::ssl_privatekey_file,
+    ssl_client_certs                => $nrpe::ssl_client_certs,
+    nasty_metachars                 => $nrpe::nasty_metachars,
+    include                         => $nrpe::include,
+    include_dir                     => $nrpe::include_dir,
   })
+
   $cfg_source = $nrpe::source ? {
     undef   => undef,
     default => $nrpe::source,
@@ -81,6 +107,7 @@ class nrpe::config {
   create_resources('nrpe::command',$nrpe::commands,{ ensure => $nrpe::ensure })
 
   if $nrpe::manage_firewall { contain nrpe::config::firewall }
+  if $nrpe::manage_logfile  { contain nrpe::config::log      }
   if $nrpe::ntp             { contain nrpe::config::ntp      }
   if $nrpe::zfs             { contain nrpe::config::zfs      }
 }

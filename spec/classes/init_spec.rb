@@ -37,6 +37,7 @@ describe 'nrpe' do
   end
 
   shared_examples 'Darwin' do
+    it { should_not contain_class('nrpe::config::log') }
     it { should contain_package('nagios-plugins') }
     it { should contain_service('nrpe').with_name('org.macports.nrpe') }
     it { should contain_file('nrpe.d').with_path('/opt/local/etc/nrpe/nrpe.d') }
@@ -63,6 +64,7 @@ describe 'nrpe' do
   end
 
   shared_examples 'FreeBSD' do
+    it { should contain_class('nrpe::config::log') }
     it { should contain_package('nagios-plugins') }
     it { should contain_service('nrpe').with_name('nrpe2') }
     it { should contain_file('nrpe.d').with_path('/usr/local/etc/nrpe.d') }
@@ -95,6 +97,7 @@ describe 'nrpe' do
   end
 
   shared_examples 'Solaris' do
+    it { should_not contain_class('nrpe::config::log') }
     it { should contain_package('nagios_plugins') }
     it { should contain_service('nrpe').with_name('svc:/network/cswnrpe:default') }
     it { should contain_file('nrpe.d').with_path('/etc/opt/csw/nrpe.d') }
@@ -112,6 +115,7 @@ describe 'nrpe' do
 
   shared_examples 'Linux' do
     it { should contain_class('nrpe::config::firewall') }
+    it { should contain_class('nrpe::config::log') }
     it { should contain_nrpe__plugin('check_open_files').with_ensure('present') }
     it { should contain_nrpe__command('check_open_files').with({
       :ensure   => 'present',
@@ -172,7 +176,7 @@ describe 'nrpe' do
   end
 
   [ { :osfamily => 'RedHat' , :kernel => 'Linux',   :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '7.4.1708',     },
-    { :osfamily => 'Debian' , :kernel => 'Linux',   :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '16.04',        },
+    { :osfamily => 'Debian' , :kernel => 'Linux',   :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '16.04', :operatingsystemmajrelease => '16.04', },
     { :osfamily => 'FreeBSD', :kernel => 'FreeBSD', :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '10.3-RELEASE', },
     { :osfamily => 'Darwin' , :kernel => 'Darwin',  :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '17.3.0',       },
     { :osfamily => 'Solaris', :kernel => 'SunOS',   :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '10',           },

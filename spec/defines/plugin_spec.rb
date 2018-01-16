@@ -5,7 +5,7 @@ describe 'nrpe::plugin', :type => 'define' do
   let :title do 'foo' end
 
   [ { :osfamily => 'RedHat' , :kernel => 'Linux',   :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '7.4.1708',     },
-    { :osfamily => 'Debian' , :kernel => 'Linux',   :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '16.04',        },
+    { :osfamily => 'Debian' , :kernel => 'Linux',   :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '16.04', :operatingsystemmajrelease => '16.04', },
     { :osfamily => 'FreeBSD', :kernel => 'FreeBSD', :architecture => 'amd64' , :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '10.3-RELEASE', },
     { :osfamily => 'Darwin' , :kernel => 'Darwin',  :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '17.3.0',       },
     { :osfamily => 'Solaris', :kernel => 'SunOS',   :architecture => 'x86_64', :sudoversion => '1.7.2p1', :puppetversion => '4.10.5', :operatingsystemrelease => '10',           },
