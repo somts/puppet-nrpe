@@ -39,13 +39,15 @@ class nrpe::params {
     'Linux'   => true,
     default   => false,
   }
-  $firewall_priority  = '200'
-  $ntp                = 'localhost'
-  $source             = undef
-  $content            = undef
-  $server             = undef
-  $zfs                = false
-  $zfs_verbosity      = 1 # anything higher breaks on Linux
+  $firewall_priority    = '200'
+  $manage_checkntp      = true
+  $ntp                  = 'localhost'
+  $source               = undef
+  $content              = undef
+  $server               = undef
+  $manage_checkzfs      = false
+  $manage_checkznapzend = false
+  $zfs_verbosity        = 1 # anything higher breaks on Linux
 
   $use_zfs_sudo = $::osfamily ? {
     'RedHat' => true,

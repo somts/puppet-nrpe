@@ -74,7 +74,7 @@ describe 'nrpe' do
     it_behaves_like 'no zfs plugin'
 
     context 'with zfs plugins enabled' do
-      let :params do { :zfs => true } end
+      let :params do { :manage_checkzfs => true } end
       it_behaves_like 'zfs plugin without sudo'
     end
   end
@@ -91,7 +91,7 @@ describe 'nrpe' do
     it_behaves_like 'Linux'
 
     context 'with zfs plugins enabled' do
-      let :params do { :zfs => true } end
+      let :params do { :manage_checkzfs => true } end
       it_behaves_like 'zfs plugin with sudo'
     end
   end
@@ -108,7 +108,7 @@ describe 'nrpe' do
     it_behaves_like 'removing convenience symlink'
 
     context 'with zfs plugins enabled' do
-      let :params do { :zfs => true } end
+      let :params do { :manage_checkzfs => true } end
       it_behaves_like 'zfs plugin without sudo'
     end
   end
@@ -122,7 +122,7 @@ describe 'nrpe' do
       :use_sudo => false,
     } ) }
 
-    it { should_not contain_firewall('200 NRPE 127.0.0.1').with({
+    it { should_not contain_firewall('200 IPv4 NRPE 127.0.0.1').with({
       :action => 'accept',
       :proto  => 'tcp',
       :source => '127.0.0.1',
@@ -132,13 +132,13 @@ describe 'nrpe' do
     context 'more allowed_hosts' do
       let :params do { :allowed_hosts => ['127.0.0.1','192.168.0.1'] } end
 
-    it { should_not contain_firewall('200 NRPE 127.0.0.1').with({
+    it { should_not contain_firewall('200 IPv4 NRPE 127.0.0.1').with({
         :action => 'accept',
         :proto  => 'tcp',
         :source => '127.0.0.1',
         :dport  => 5666,
       }) }
-      it { should contain_firewall('200 NRPE 192.168.0.1').with({
+      it { should contain_firewall('200 IPv4 NRPE 192.168.0.1').with({
         :action => 'accept',
         :proto  => 'tcp',
         :source => '192.168.0.1',

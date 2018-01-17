@@ -49,6 +49,7 @@ class nrpe::config {
     ssl_cert_file                   => $nrpe::ssl_cert_file,
     ssl_privatekey_file             => $nrpe::ssl_privatekey_file,
     ssl_client_certs                => $nrpe::ssl_client_certs,
+    ssl_logging                     => $nrpe::ssl_logging,
     nasty_metachars                 => $nrpe::nasty_metachars,
     include                         => $nrpe::include,
     include_dir                     => $nrpe::include_dir,
@@ -106,8 +107,9 @@ class nrpe::config {
   create_resources('nrpe::plugin',$nrpe::plugins,{ ensure => $nrpe::ensure })
   create_resources('nrpe::command',$nrpe::commands,{ ensure => $nrpe::ensure })
 
-  if $nrpe::manage_firewall { contain nrpe::config::firewall }
-  if $nrpe::manage_logfile  { contain nrpe::config::log      }
-  if $nrpe::ntp             { contain nrpe::config::ntp      }
-  if $nrpe::zfs             { contain nrpe::config::zfs      }
+  if $nrpe::manage_firewall      { contain nrpe::config::firewall }
+  if $nrpe::manage_logfile       { contain nrpe::config::log      }
+  if $nrpe::manage_checkntp      { contain nrpe::config::ntp      }
+  if $nrpe::manage_checkzfs      { contain nrpe::config::zfs      }
+  if $nrpe::manage_checkznapzend { contain nrpe::config::znapzend }
 }

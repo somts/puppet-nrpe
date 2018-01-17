@@ -13,6 +13,7 @@ class nrpe::config::log {
   }
 
   logrotate::rule { 'nrpe':
+    ensure        => $nrpe::ensure,
     compress      => true,
     delaycompress => true,
     missingok     => true,
