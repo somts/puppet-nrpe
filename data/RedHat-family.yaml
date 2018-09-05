@@ -1,0 +1,10 @@
+---
+nrpe::config_file: /etc/nagios/nrpe.cfg
+nrpe::nrpe_group: nagios
+nrpe::nrpe_user: nagios
+nrpe::plugins_packages: ['nagios-plugins-all','nagios-plugins-nrpe']
+nrpe::pluginsdir: /usr/lib64/nagios/plugins
+nrpe::pidfile: /var/run/nrpe/nrpe2.pid
+nrpe::use_zfs_sudo: true
+nrpe::sudoers_exe: /bin/sudo
+...

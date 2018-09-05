@@ -1,0 +1,13 @@
+---
+nrpe::include_dir: /etc/nagios/nrpe.d
+nrpe::manage_firewall: true
+nrpe::manage_logfile: true
+
+nrpe::commands:
+  check_open_files:
+    command: 'check_open_files -w 80 -c 90'
+
+nrpe::plugins:
+  check_open_files:
+    source: 'puppet:///modules/nrpe/plugins/check_open_files.pl'
+...
