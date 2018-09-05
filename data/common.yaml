@@ -72,7 +72,7 @@ nrpe::commands:
     command: 'check_http -I "$ARG1$" -p "$ARG2$" -u "$ARG3$" -s "$ARG4$"'
   check_url_auth:
     command: >
-      'check_http -I "$ARG1$" -p "$ARG2$" -u "$ARG3$" -s "$ARG4$" -a "$ARG5$"'
+      check_http -I "$ARG1$" -p "$ARG2$" -u "$ARG3$" -s "$ARG4$" -a "$ARG5$"
   check_myfilesize:
     command: 'check_myfilesize $ARG1$ $ARG2$ $ARG3$'
 
