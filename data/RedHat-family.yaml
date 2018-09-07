@@ -1,7 +1,7 @@
 ---
 nrpe::config_file: /etc/nagios/nrpe.cfg
-nrpe::nrpe_group: nagios
-nrpe::nrpe_user: nagios
+nrpe::nrpe_group: nrpe
+nrpe::nrpe_user: nrpe
 nrpe::plugins_packages:
   - nagios-plugins-all
   - nagios-plugins-nrpe
