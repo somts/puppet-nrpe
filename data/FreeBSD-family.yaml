@@ -14,6 +14,6 @@ nrpe::plugins_packages:
   - 'nagios-pf-plugin'
   - 'py27-nagios-check_mongodb'
 nrpe::pluginsdir: /usr/local/libexec/nagios
-nrpe::pidfile: /var/run/nrpe2/nrpe2.pid
+nrpe::pid_file: /var/run/nrpe2/nrpe2.pid
 nrpe::service: nrpe2
 ...
