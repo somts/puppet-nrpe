@@ -12,12 +12,16 @@ class nrpe::config::firewall {
 
     unless $host in ['127.0.0.1','::1'] { # Skip localhost
       if is_ipv6_address($host)  {
-        firewall { "${nrpe::firewall_priority} IPv6 NRPE ${host}":
-          * => $fw_defaults + { source => $host, provider => 'ip6tables' },
+        if !defined(Firewall["${nrpe::firewall_priority} IPv6 NRPE ${host}"]) {
+          firewall { "${nrpe::firewall_priority} IPv6 NRPE ${host}":
+            * => $fw_defaults + { source => $host, provider => 'ip6tables' },
+          }
         }
       } else {
-        firewall { "${nrpe::firewall_priority} IPv4 NRPE ${host}":
-          * => $fw_defaults + { source => $host },
+        if !defined(Firewall["${nrpe::firewall_priority} IPv4 NRPE ${host}"]) {
+          firewall { "${nrpe::firewall_priority} IPv4 NRPE ${host}":
+            * => $fw_defaults + { source => $host },
+          }
         }
       }
     }
