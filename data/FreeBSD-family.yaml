@@ -1,6 +1,6 @@
 ---
 nrpe::config_file: /usr/local/etc/nrpe.cfg
-nrpe::config_group: wheel
+nrpe::config_file_group: wheel
 nrpe::include_dir: /usr/local/etc/nrpe.d
 nrpe::plugin_group: wheel
 nrpe::manage_logfile: true
