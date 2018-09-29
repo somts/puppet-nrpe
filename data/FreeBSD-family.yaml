@@ -5,7 +5,7 @@ nrpe::include_dir: /usr/local/etc/nrpe.d
 nrpe::plugin_group: wheel
 nrpe::manage_logfile: true
 nrpe::normal_etc: /usr/local/etc
-nrpe::package: nrpe-ssl
+nrpe::package: nrpe3
 nrpe::plugins_packages:
   - 'nagios-plugins'
   - 'nagios-snmp-plugins-extras'
@@ -14,6 +14,6 @@ nrpe::plugins_packages:
   - 'nagios-pf-plugin'
   - 'py27-nagios-check_mongodb'
 nrpe::pluginsdir: /usr/local/libexec/nagios
-nrpe::pid_file: /var/run/nrpe2/nrpe2.pid
-nrpe::service: nrpe2
+nrpe::pid_file: /var/run/nrpe3/nrpe3.pid
+nrpe::service: nrpe3
 ...
