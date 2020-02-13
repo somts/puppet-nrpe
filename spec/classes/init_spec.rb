@@ -82,7 +82,7 @@ describe 'nrpe' do
   shared_examples 'FreeBSD' do
     it do should contain_class('nrpe::config::log') end
     it do should contain_package('nagios-plugins') end
-    it do should contain_service('nrpe').with_name('nrpe2') end
+    it do should contain_service('nrpe').with_name('nrpe3') end
     it do should contain_file('nrpe.d').with_path('/usr/local/etc/nrpe.d') end
     it do
       should contain_file('nrpe.cfg').with_path('/usr/local/etc/nrpe.cfg')

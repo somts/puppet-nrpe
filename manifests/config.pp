@@ -24,7 +24,7 @@ class nrpe::config {
 
   $normal_cfg = "${nrpe::normal_etc}/nrpe.cfg"
 
-  $settings = delete_undef_values({
+  $settings = nrpe::hash2nrpe({
     log_facility                    => $_log_facility,
     log_file                        => $_log_file,
     debug                           => $nrpe::debug,
@@ -60,7 +60,7 @@ class nrpe::config {
     default => $nrpe::source,
   }
   $cfg_content = $nrpe::content ? {
-    undef   => template('nrpe/nrpe.cfg.erb'),
+    undef   => $settings,
     default => $nrpe::content,
   }
 
