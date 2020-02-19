@@ -3,11 +3,11 @@ require 'spec_helper'
 describe 'nrpe::plugin', :type => 'define' do
 
   let :title do 'foo' end
-  on_supported_os.each do |os, facts|
+  on_supported_os.each do |os, os_facts|
 
     context "on platform #{os} with no args" do
       let :facts do
-        facts
+        os_facts
       end
       it { should_not compile }
 
@@ -26,7 +26,7 @@ describe 'nrpe::plugin', :type => 'define' do
         context "with #{params.keys[0]} set" do
           let :params do params end
 
-          case facts[:osfamily]
+          case os_facts[:osfamily]
           when 'RedHat'  then
             it { should contain_file('foo').with_path('/usr/lib64/nagios/plugins/foo') }
           when 'Darwin'  then

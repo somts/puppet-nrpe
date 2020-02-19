@@ -199,15 +199,15 @@ describe 'nrpe' do
     end
   end
 
-  on_supported_os.each do |os, facts|
+  on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let :facts do
-        facts
+        os_facts
       end
       it do is_expected.to compile.with_all_deps end
       it do is_expected.to create_class('nrpe') end
 
-      case facts[:osfamily]
+      case os_facts[:osfamily]
       when 'RedHat' then
         it_behaves_like 'RedHat'
       when 'Darwin' then
