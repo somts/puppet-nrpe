@@ -1,6 +1,9 @@
 # Private class for init.pp
 class nrpe::service {
-  ### internal variables
+  # This class only makes sense when called from init.pp
+  assert_private("Must only be called by ${module_name}")
+
+  # internal variables
 
   # Deal with ensuring things.
   $svc_enable = $nrpe::ensure ? { 'absent' => false, default => true }

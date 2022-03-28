@@ -1,5 +1,8 @@
 # Configure NRPE firewall
 class nrpe::config::firewall {
+  # This class only makes sense when called from init.pp
+  assert_private("Must only be called by ${module_name}")
+
   $fw_defaults = {
     ensure   => $nrpe::ensure,
     action   => 'accept',

@@ -1,51 +1,62 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
-### Environment variable version overrrides
+def location_for(place_or_version, fake_version = nil)
+  git_url_regex = %r{\A(?<url>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
+  file_url_regex = %r{\Afile:\/\/(?<path>.*)}
 
-# Per puppet enterprise 2016.4, set the versions of critical software.
-puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'] : '5.5.10'
-
-# Select compatible version of rubocop
-rubocopversion = RUBY_VERSION < '2.2.0' ? '< 0.58.0' : '>= 0.58.0'
-
-### Gem requirements
-gem 'ci_reporter_rspec'
-gem 'facter'
-gem 'git'
-gem 'hiera-eyaml'
-gem 'json_pure'
-gem 'kramdown' # for markdown parsing
-gem 'metadata-json-lint'
-# https://puppet.com/blog/use-onceover-start-testing-rspec-puppet
-gem 'onceover'
-gem 'parallel_tests'
-gem 'puppet', puppetversion
-gem 'puppet-lint', '>= 1.0.0'
-
-# http://www.camptocamp.com/en/actualite/getting-code-ready-puppet-4/
-# gem 'puppet-lint-absolute_classname-check'
-gem 'puppet-lint-empty_string-check'
-gem 'puppet-lint-leading_zero-check'
-gem 'puppet-lint-roles_and_profiles-check'
-gem 'puppet-lint-spaceship_operator_without_tag-check'
-gem 'puppet-lint-undef_in_function-check'
-gem 'puppet-lint-unquoted_string-check'
-gem 'puppet-lint-variable_contains_upcase'
-
-gem 'puppet-syntax', require: false
-gem 'puppetlabs_spec_helper', '>= 1.0.0'
-gem 'rspec-puppet', '>= 2.6.11'
-gem 'rspec-puppet-facts'
-gem 'pdk'
-
-# rspec must be v2 for ruby 1.8.7
-if RUBY_VERSION >= '1.8.7' && RUBY_VERSION < '1.9'
-  gem 'rake', '~> 10.0'
-  gem 'rspec', '~> 2.0'
-else
-  # rubocop requires ruby >= 1.9, but < 2.2.0 need 0.58.0
-  gem 'rubocop', rubocopversion
-  gem 'rubocop-rspec'
-  gem 'rubocop-performance'
-  gem 'rubocop-rails'
+  if place_or_version && (git_url = place_or_version.match(git_url_regex))
+    [fake_version, { git: git_url[:url], branch: git_url[:branch], require: false }].compact
+  elsif place_or_version && (file_url = place_or_version.match(file_url_regex))
+    ['>= 0', { path: File.expand_path(file_url[:path]), require: false }]
+  else
+    [place_or_version, { require: false }]
+  end
 end
+
+ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
+minor_version = ruby_version_segments[0..1].join('.')
+
+group :development do
+  gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "json", '= 2.1.0',                                         require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "json", '= 2.3.0',                                         require: false if Gem::Requirement.create(['>= 2.7.0', '< 2.8.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "puppet-module-posix-default-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby]
+  gem "puppet-module-posix-dev-r#{minor_version}", '~> 1.0',     require: false, platforms: [:ruby]
+  gem "puppet-module-win-default-r#{minor_version}", '~> 1.0',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-win-dev-r#{minor_version}", '~> 1.0',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+end
+group :system_tests do
+  gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby]
+  gem "puppet-module-win-system-r#{minor_version}", '~> 1.0',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+end
+
+puppet_version = ENV['PUPPET_GEM_VERSION']
+facter_version = ENV['FACTER_GEM_VERSION']
+hiera_version = ENV['HIERA_GEM_VERSION']
+
+gems = {}
+
+gems['puppet'] = location_for(puppet_version)
+
+# If facter or hiera versions have been specified via the environment
+# variables
+
+gems['facter'] = location_for(facter_version) if facter_version
+gems['hiera'] = location_for(hiera_version) if hiera_version
+
+gems.each do |gem_name, gem_params|
+  gem gem_name, *gem_params
+end
+
+# Evaluate Gemfile.local and ~/.gemfile if they exist
+extra_gemfiles = [
+  "#{__FILE__}.local",
+  File.join(Dir.home, '.gemfile'),
+]
+
+extra_gemfiles.each do |gemfile|
+  if File.file?(gemfile) && File.readable?(gemfile)
+    eval(File.read(gemfile), binding)
+  end
+end
+# vim: syntax=ruby

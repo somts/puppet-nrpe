@@ -1,0 +1,10 @@
+---
+nrpe::config_file: '/opt/local/etc/nrpe/nrpe.cfg'
+nrpe::config_group: 'wheel'
+nrpe::include_dir: '/opt/local/etc/nrpe/nrpe.d'
+nrpe::normal_etc: '/private/etc'
+nrpe::pid_file: '/opt/local/var/run/nrpe/nrpe.lock'
+nrpe::plugin_group: 'wheel'
+nrpe::pluginsdir: '/opt/local/libexec/nagios'
+nrpe::service: 'org.macports.nrpe'
+...

@@ -1,0 +1,20 @@
+---
+nrpe::commands: {check_open_files: {command: 'check_open_files -w 80 -c 90'}}
+nrpe::config_file: '/etc/nagios/nrpe.cfg'
+nrpe::include_dir: '/etc/nagios/nrpe.d'
+nrpe::manage_firewall: true
+nrpe::manage_logfile: true
+nrpe::nrpe_group: 'nrpe'
+nrpe::nrpe_user: 'nrpe'
+nrpe::pid_file: '/var/run/nrpe/nrpe.pid'
+nrpe::plugins:
+  check_open_files:
+    source: 'puppet:///modules/nrpe/plugins/check_open_files.pl'
+nrpe::plugins_packages:
+  - 'nagios-plugins-all'
+  - 'nagios-plugins-nrpe'
+  - 'nrpe-selinux'
+nrpe::pluginsdir: '/usr/lib64/nagios/plugins'
+nrpe::sudoers_exe: '/bin/sudo'
+nrpe::use_zfs_sudo: true
+...

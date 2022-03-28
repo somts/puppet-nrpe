@@ -1,5 +1,7 @@
 # Private class for init.pp
 class nrpe::config {
+  # This class only makes sense when called from init.pp
+  assert_private("Must only be called by ${module_name}")
 
   ### internal variables
 

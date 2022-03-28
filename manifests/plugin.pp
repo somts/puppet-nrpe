@@ -3,9 +3,9 @@
 # Install an NRPE plugin from a Puppet resource into the NRPE plugin dir.
 #
 define nrpe::plugin(
-  Enum[absent,present] $ensure  = 'present',
-  Optional[String]     $content = undef,
-  Optional[String]     $source  = undef,
+  Enum['absent', 'present'] $ensure  = 'present',
+  Optional[String] $content = undef,
+  Optional[String] $source  = undef,
 ) {
   if $source != undef and $content != undef {
     fail('Cannot set multiple of $content or $source')
@@ -14,7 +14,7 @@ define nrpe::plugin(
     fail('Must set $content or $source')
   }
 
-  include nrpe
+  include 'nrpe'
 
   file { $name :
     ensure  => $ensure,

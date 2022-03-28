@@ -86,8 +86,8 @@ define nrpe::command(
     fail('Must set only one of $command, $content or $source')
   }
 
-  include nrpe
-  if $use_sudo { include sudo }
+  include 'nrpe'
+  if $use_sudo { include 'sudo' }
 
   $cmd = $use_pluginsdir ? {
     true  => "${nrpe::pluginsdir}/${command}",

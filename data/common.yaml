@@ -7,14 +7,13 @@ lookup_options:
     merge: hash
     strategy: deep
 
-nrpe::normal_etc: /etc
-
-nrpe::ensure: present
+nrpe::normal_etc: '/etc'
+nrpe::ensure: 'present'
 nrpe::service_status: true
 nrpe::service_restart: true
-nrpe::config_file_owner: root
+nrpe::config_file_owner: 'root'
 nrpe::config_file_mode: '0644'
-nrpe::plugin_owner: root
+nrpe::plugin_owner: 'root'
 nrpe::plugin_mode: '0755'
 nrpe::manage_firewall: false
 nrpe::manage_logfile: false
@@ -28,14 +27,14 @@ nrpe::manage_checkzfs: false
 nrpe::manage_checkznapzend: false
 nrpe::zfs_verbosity: 1  # anything higher breaks on Linux
 nrpe::use_zfs_sudo: false
-nrpe::service: nrpe
-nrpe::package: nrpe
-nrpe::plugins_packages: [nagios-plugins]
-nrpe::config_file: /etc/nrpe.cfg
-nrpe::config_file_group: root
-nrpe::pluginsdir: /usr/libexec/nagios-plugins
-nrpe::plugin_group: root
-nrpe::sudoers_exe: /usr/bin/sudo
+nrpe::service: 'nrpe'
+nrpe::package: 'nrpe'
+nrpe::plugins_packages: ['nagios-plugins']
+nrpe::config_file: '/etc/nrpe.cfg'
+nrpe::config_file_group: 'root'
+nrpe::pluginsdir: '/usr/libexec/nagios-plugins'
+nrpe::plugin_group: 'root'
+nrpe::sudoers_exe: '/usr/bin/sudo'
 
 nrpe::plugins:
   check_myfilesize:
@@ -83,7 +82,7 @@ nrpe::debug: false
 # The name of the file in which the NRPE daemon should write it's process ID
 # number. The file is only written if the NRPE daemon is started by the root
 # user and is running in standalone mode.
-nrpe::pid_file: /var/run/nrpe.pid
+nrpe::pid_file: '/var/run/nrpe.pid'
 
 # PORT NUMBER
 # Port number we should wait for connections on.
@@ -114,7 +113,7 @@ nrpe::listen_queue_size:
 # or xinetd or via systemd. [In systemd please use
 # systemctl edit nrpe.service
 # to set up the group.
-nrpe::nrpe_user: nagios
+nrpe::nrpe_user: 'nagios'
 
 # NRPE GROUP
 # This determines the effective group that the NRPE daemon should run as.
@@ -124,7 +123,7 @@ nrpe::nrpe_user: nagios
 # or xinetd or via systemd. [In systemd please use
 # systemctl edit nrpe.service
 # to set up the user.
-nrpe::nrpe_group: nagios
+nrpe::nrpe_group: 'nagios'
 
 # ALLOWED HOST ADDRESSES
 # This is an optional comma-delimited list of IP address or hostnames

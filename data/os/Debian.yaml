@@ -1,0 +1,21 @@
+---
+nrpe::commands: {check_open_files: {command: 'check_open_files -w 80 -c 90'}}
+nrpe::config_file: '/etc/nagios/nrpe.cfg'
+nrpe::include_dir: '/etc/nagios/nrpe.d'
+nrpe::manage_firewall: true
+nrpe::manage_logfile: true
+nrpe::package: 'nagios-nrpe-server'
+nrpe::plugins:
+  check_open_files:
+    source: 'puppet:///modules/nrpe/plugins/check_open_files.pl'
+nrpe::plugins_packages:
+  - 'nagios-nrpe-plugin'
+  - 'nagios-plugins'
+  - 'nagios-plugins-basic'
+  - 'nagios-plugins-common'
+  - 'nagios-plugins-standard'
+  - 'nagios-plugins-contrib'
+  - 'nagios-snmp-plugins'
+nrpe::pluginsdir: '/usr/lib/nagios/plugins'
+nrpe::service: 'nagios-nrpe-server'
+...

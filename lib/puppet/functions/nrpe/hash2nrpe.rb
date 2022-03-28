@@ -15,14 +15,14 @@ Puppet::Functions.create_function(:'nrpe::hash2nrpe') do
       raise(Puppet::ParseError, 'nrpe::hash2nrpe(): Requires Hash to work with')
     end
 
-    call_function('delete_undef_values',object).each do |k, v|
+    call_function('delete_undef_values', object).each do |k, v|
       case v.class.to_s
       when 'Array' then result[k] = v.join(',')
       when 'TrueClass', 'FalseClass' then result[k] = v ? '1' : '0'
-      else result[k] = call_function('shellquote',v.to_s)
+      else result[k] = call_function('shellquote', v.to_s)
       end
     end
 
-    return result.sort.to_h.map { |k, v| "#{k}=#{v}" }.join("\n")
+    result.sort.to_h.map { |k, v| "#{k}=#{v}" }.join("\n")
   end
 end
